@@ -14,6 +14,19 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>net.sf.phat</groupId>
+            <artifactId>sphinx4-data</artifactId>
+            <version>5prealpha</version>
+        </dependency>
 
+        <dependency>
+            <groupId>net.sf.phat</groupId>
+            <artifactId>sphinx4-core</artifactId>
+            <version>5prealpha</version>
+        </dependency>
+
+    </dependencies>
 
 </project>
