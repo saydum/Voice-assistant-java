@@ -1,0 +1,9 @@
+open chrome
+open youtube
+open calculator
+open sublimetext
+open project
+close chrome
+close youtube
+close calculator
+close sublimetext
