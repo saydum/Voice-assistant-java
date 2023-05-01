@@ -1,54 +1,53 @@
 package ru.saydum;
 
-import edu.cmu.sphinx.api.Configuration;
 import edu.cmu.sphinx.api.LiveSpeechRecognizer;
 import edu.cmu.sphinx.api.SpeechResult;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
+
     public static void main(String[] args) {
+        Synthesizer synthesizer = new Synthesizer();
 
-        Configuration config = new Configuration();
+        // Set Command
+        List<String> voiceCommandRun = new ArrayList<>();
+        List<String> runCommand = new ArrayList<>();
 
-        config.setAcousticModelPath("resource:/edu/cmu/sphinx/models/en-us/en-us");//hard coded path
-        config.setDictionaryPath("src/main/resources/5214.dic");//need to make file from sphinx knowledge base convertor
-        config.setLanguageModelPath("src/main/resources/5214.lm");
+        voiceCommandRun.add("Open chrome");
+        runCommand.add("google-chrome");
+
+        voiceCommandRun.add("Open project");
+        runCommand.add("code .");
+
+        voiceCommandRun.add("Open calculator");
+        runCommand.add("gnome-calculator");
+        // End Set command
+
+        VoiceCommand voiceCommand = new VoiceCommand();
+
+        Config config = new Config();
+
 
         try {
-            //making system understand you are speaking
-            LiveSpeechRecognizer speech = new LiveSpeechRecognizer(config);
+            LiveSpeechRecognizer speech = new LiveSpeechRecognizer(config.make());
             speech.startRecognition(true);
 
             SpeechResult speechResult = null;
+
+            synthesizer.voice("Welcome sir");
             System.out.println("listening");
-            //running until user is speaking
+
             while ((speechResult = speech.getResult()) != null) {
+                System.out.println("listening");
                 String voiceCommandSp = speechResult.getHypothesis();
                 System.out.println("Synthesizer Command is " + voiceCommandSp);
 
-                if (voiceCommandSp.equalsIgnoreCase("Open chrome")) {
-                    Runtime.getRuntime().exec("google-chrome");
+                for (int i = 0; i < voiceCommandRun.size(); i++) {
+                    voiceCommand.run(voiceCommandSp, voiceCommandRun.get(i), runCommand.get(i));
                 }
-
-                if (voiceCommandSp.equalsIgnoreCase("Open youtube")) {
-                    Runtime.getRuntime().exec("google-chrome youtube.com");
-                }
-
-                if (voiceCommandSp.equalsIgnoreCase("Open calculator")) {
-                    Runtime.getRuntime().exec("gnome-calculator");
-                }
-
-                if (voiceCommandSp.equalsIgnoreCase("Open project")) {
-//                    Runtime.getRuntime().exec("");
-                    Runtime.getRuntime().exec("code .");
-                }
-                if (voiceCommandSp.equalsIgnoreCase("Play music")) {
-//                    Runtime.getRuntime().exec("");
-                    Runtime.getRuntime().exec("mplayer lofi.mp3");
-                }
-//
-
             }
 
         } catch (IOException e) {
